@@ -1,0 +1,12 @@
+services:
+  dynamo:
+    image: amazon/dynamodb-local:2.4.0
+    container_name: gf-dynamo
+    ports:
+      - "8000:8000"
+    volumes:
+      - guessfreak_dynamodb_local:/home/dynamodblocal/
+    entrypoint: "java -Djava.library.path=/DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -disableTelemetry"
+
+volumes:
+  guessfreak_dynamodb_local:
