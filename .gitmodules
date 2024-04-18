@@ -1,0 +1,4 @@
+[submodule "local/supabase/supabase_repo_clone"]
+	path = local/supabase/supabase_repo_clone
+	url = https://github.com/supabase/supabase
+	branch = v0.24.03
