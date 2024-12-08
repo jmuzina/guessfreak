@@ -1,0 +1,12 @@
+{
+  "name": "supabase-local",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "init": "pnpm supabase init",
+    "start": "pnpm supabase start"
+  },
+  "devDependencies": {
+    "supabase": "2.0.5"
+  }
+}
