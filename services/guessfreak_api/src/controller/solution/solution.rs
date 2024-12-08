@@ -1,13 +1,12 @@
-use super::super::model::solution::Solution;
-use super::super::db::supabase;
+use super::super::super::model::solution::Solution;
+use super::super::super::db::supabase;
 use serde_json;
-use log::error;
 
 /**
-    * @param id The id of the solution
-    * @return The solution
+ * @param id The id of the solution
+ * @return The solution
 */
-pub async fn get_solution(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
+pub async fn get_solution_by_id(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
     let data = supabase::get_db()
         .select("solution")
         .eq("id", id.to_string().as_str())
@@ -20,7 +19,7 @@ pub async fn get_solution(id: u64) -> Result<impl warp::Reply, warp::Rejection> 
     }
 
     let solution: Solution = serde_json::from_value(data[0].clone()).map_err(|err| {
-        error!("Unexpected deserialization error mapping to Solution model for id {}: {:?}", id, err);
+        log::error!("Unexpected deserialization error mapping to Solution model for id {}: {:?}", id, err);
         warp::reject::not_found()
     })?;
 

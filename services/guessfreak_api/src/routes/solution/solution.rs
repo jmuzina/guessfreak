@@ -1,5 +1,5 @@
 use warp::Filter;
-use super::super::super::controller::solution;
+use super::super::super::controller::solution::solution;
 
 /**
  * Solution routes
@@ -19,5 +19,5 @@ pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
 fn get_solution_by_id() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path::param::<u64>()
         .and(warp::get())
-        .and_then(solution::get_solution)
+        .and_then(solution::get_solution_by_id)
 }
