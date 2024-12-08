@@ -4,9 +4,6 @@ use serde_json;
 use log::error;
 
 /**
-    * Get a solution by its id
-    * This is not really a useful endpoint, but it's a good place to start learning Warp :)
-    * GET /solution/{id}
     * @param id The id of the solution
     * @return The solution
 */

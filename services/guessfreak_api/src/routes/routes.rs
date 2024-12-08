@@ -1,14 +1,10 @@
 use warp::Filter;
-use super::super::controller::solution;
+use super::solution::solution;
 
-// A function to build our routes
+/**
+    * All API routes
+*/
 pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    get_post()
-}
-
-// A route to handle GET requests for a specific post
-fn get_post() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    warp::path!("solutions" / u64)
-        .and(warp::get())
-        .and_then(solution::get_solution)
+    solution::routes()
+    //.or(other::routes())..... TODO add more routes
 }
