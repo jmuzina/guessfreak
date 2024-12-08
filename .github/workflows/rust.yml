@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'services/guessfreak_api/**'
+      - '.github/workflows/rust.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+      - 'services/guessfreak_api/**'
+      - '.github/workflows/rust.yml'
+      
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true 
+  
+    - name: Build
+      working-directory: ./services/guessfreak_api
+      run: cargo build --verbose
+      
+    - name: Run tests
+      working-directory: ./services/guessfreak_api
+      run: cargo test --verbose
