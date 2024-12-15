@@ -1,12 +1,11 @@
 use warp::Filter;
-use crate::controller::files;
-use crate::model::path::PathRequest;
+use crate::controller::static_asset;
 
 /**
  * Files routes
 */
 pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    warp::path("files")
+    warp::path("static_asset")
         .and(
             stream_file()
         )
@@ -14,11 +13,10 @@ pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
 
 /**
  * Stream a file
- * GET /files/stream_file?path=encoded/path/here
+ * GET /static_asset/<static_asset_id>
 */
 fn stream_file() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
-    warp::path("stream_file")
-        .and(warp::get())
-        .and(warp::query::<PathRequest>())
-        .and_then(files::stream_file)
+    warp::get()
+        .and(warp::path::param::<u64>())
+        .and_then(static_asset::stream_static_asset)
 }

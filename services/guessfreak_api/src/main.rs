@@ -4,6 +4,7 @@ mod db;
 mod model;
 mod controller;
 mod routes;
+mod service;
 
 #[tokio::main]
 async fn main() {
