@@ -9,22 +9,18 @@ pub mod files {
     pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
         warp::path("files")
             .and(
-                get_files_by_path()
-                .or(get_file())
+                stream_file()
             )
     }
 
-    fn get_files_by_path() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
-        warp::path("get_files")
+    /**
+     * Stream a file
+     * GET /files/stream_file?path=encoded/path/here
+    */
+    fn stream_file() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
+        warp::path("stream_file")
             .and(warp::get())
-            .and(warp::query::<PathRequest>()) // Extract `path` from query string ?path=encoded/path/here
-            .and_then(files::get_files_by_path)
-    }
-
-    fn get_file() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
-        warp::path("get_file")
-            .and(warp::get())
-            .and(warp::query::<PathRequest>()) // Extract `path` from query string ?path=encoded/path/here
-            .and_then(files::get_file)
+            .and(warp::query::<PathRequest>())
+            .and_then(files::stream_file)
     }
 }
