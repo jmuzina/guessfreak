@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "init": "pnpm supabase init",
-    "start": "pnpm supabase start"
+    "start": "pnpm supabase start",
+    "stop": "pnpm supabase stop"
   },
   "devDependencies": {
     "supabase": "2.0.5"
