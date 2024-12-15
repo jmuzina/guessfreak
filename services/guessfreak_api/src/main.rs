@@ -1,5 +1,4 @@
 use dotenv::dotenv;
-use env_logger;
 
 mod db;
 mod model;

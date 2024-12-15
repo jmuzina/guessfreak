@@ -35,6 +35,10 @@ jobs:
     - name: Build
       working-directory: ./services/guessfreak_api
       run: cargo build --verbose
+
+    - name: Lint
+      working-directory: ./services/guessfreak_api
+      run: cargo clippy --all-targets --all-features
       
     - name: Run tests
       working-directory: ./services/guessfreak_api
