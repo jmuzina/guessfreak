@@ -11,7 +11,8 @@ pub async fn stream_file(path: PathRequest) -> Result<impl warp::Reply, warp::Re
             let stream = tokio_stream::iter(vec![Ok::<Bytes, std::io::Error>(Bytes::from(contents))]);
 
             let response = Response::builder()
-                .header("Content-Type", mime_guess::from_path(path.path).first_or_octet_stream().to_string())
+                .header("Content-Type", mime_guess::from_path(&path.path).first_or_octet_stream().to_string())
+                .header("Content-Disposition", format!("filename=\"{}\"", &path.path.split("/").last().unwrap_or(&path.path)))
                 .body(warp::hyper::Body::wrap_stream(stream));
 
             match response {
