@@ -1,6 +1,8 @@
 use serde_json;
 use crate::db::supabase;
 use crate::model::solution::Solution;
+use crate::service::solution;
+use crate::service::solution::get_solution_chance_by_id;
 
 /**
  * @param id The id of the solution
@@ -25,4 +27,11 @@ pub async fn get_solution_by_id(id: u64) -> Result<impl warp::Reply, warp::Rejec
     })?;
 
     Ok(warp::reply::json(&solution))
+}
+
+pub async fn get_solution_chance(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
+    match get_solution_chance_by_id(id).await {
+        Some(solution_chance) => Ok(warp::reply::json(&solution_chance)),
+        None => Err(warp::reject::not_found())
+    }
 }

@@ -7,7 +7,7 @@ use crate::controller::solution;
 pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::path("solution")
         .and(
-            get_solution_by_id()
+            get_solution_by_id().or(get_solution_chance_by_id())
         )
 }
 
@@ -20,4 +20,11 @@ fn get_solution_by_id() -> impl Filter<Extract = (impl warp::Reply,), Error = wa
     warp::path::param::<u64>()
         .and(warp::get())
         .and_then(solution::get_solution_by_id)
+}
+
+fn get_solution_chance_by_id() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
+    warp::path("chance")
+        .and(warp::path::param::<u64>())
+        .and(warp::get())
+        .and_then(solution::get_solution_chance)
 }
