@@ -3,9 +3,17 @@ use chrono::{DateTime, Utc};
 use crate::model::static_asset::StaticAsset;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct SolutionType {
+    pub id: u64,
+    pub name: String,
+    pub label: String
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Solution {
     pub id: u64,
-    pub created_at: DateTime<Utc>
+    pub created_at: DateTime<Utc>,
+    pub solution_type:SolutionType
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
