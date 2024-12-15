@@ -1,4 +1,5 @@
 pub mod files {
+    use bytes::Bytes;
     use supabase_storage_rs::errors::Error;
     use supabase_storage_rs::models::{FileObject, FileSearchOptions};
     use crate::db::supabase::storage;
@@ -14,4 +15,33 @@ pub mod files {
             }
         }
     }
+
+    use tokio_stream::StreamExt;
+    use warp::http::Response;
+
+
+    pub async fn get_file(path: PathRequest) -> Result<impl warp::Reply, warp::Rejection> {
+        log::info!("File path: {:?}", path.path);
+        let file_bytes = storage::get_file(path.path.as_ref()).await;
+
+        match file_bytes {
+            Ok(contents) => {
+                // Wrap the Vec<u8> in Bytes and stream it as a Result<Bytes, std::io::Error>
+                let stream = tokio_stream::iter(vec![Ok::<Bytes, std::io::Error>(Bytes::from(contents))]);
+
+                let response = Response::builder()
+                    .header("Content-Type", "application/octet-stream")
+                    .header("Content-Disposition", format!("attachment; filename=\"{}\"", path.path.split('/').last().unwrap()))
+                    .body(warp::hyper::Body::wrap_stream(stream))
+                    .unwrap();
+
+                Ok(response)
+            },
+            Err(err) => {
+                log::error!("Failed to get file: {}", err);
+                Err(warp::reject::not_found())
+            }
+        }
+    }
+
 }

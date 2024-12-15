@@ -10,6 +10,7 @@ pub mod files {
         warp::path("files")
             .and(
                 get_files_by_path()
+                .or(get_file())
             )
     }
 
@@ -18,5 +19,12 @@ pub mod files {
             .and(warp::get())
             .and(warp::query::<PathRequest>()) // Extract `path` from query string ?path=encoded/path/here
             .and_then(files::get_files_by_path)
+    }
+
+    fn get_file() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
+        warp::path("get_file")
+            .and(warp::get())
+            .and(warp::query::<PathRequest>()) // Extract `path` from query string ?path=encoded/path/here
+            .and_then(files::get_file)
     }
 }
