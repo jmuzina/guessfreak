@@ -9,7 +9,6 @@ use crate::service::solution::get_solution_chance_by_id;
 */
 pub async fn get_solution_by_id(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
     let solution_record = solution::get_solution_by_id(id).await;
-    log::info!("Got solution record: {:?}", solution_record);
     match solution_record {
         Some(solution) => Ok(warp::reply::json(&solution)),
         None => Err(warp::reject::not_found())

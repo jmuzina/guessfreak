@@ -22,6 +22,5 @@ pub struct SolutionChance {
     pub created_at: DateTime<Utc>,
     pub solution: Solution,
     pub text_html: String,
-    pub static_asset: Option<StaticAsset>,
-    pub chance_order: Option<u64>
+    pub static_asset: Option<StaticAsset>
 }
