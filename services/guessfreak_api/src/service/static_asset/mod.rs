@@ -1,4 +1,4 @@
-use crate::db::supabase::get_db_client;
+use crate::db::supabase::sql::get_db_client;
 use crate::model::static_asset::StaticAsset;
 use crate::util::records::get_first_record_from_result_vec;
 

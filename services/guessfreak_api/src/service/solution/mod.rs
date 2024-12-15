@@ -1,5 +1,5 @@
-use crate::db::supabase::get_db_client;
-use crate::model::solution::{Solution, SolutionChance};
+use crate::db::supabase::sql::get_db_client;
+use crate::model::solution::{Solution, SolutionChance, SolutionGuess};
 use crate::util::records::{get_first_record_from_result_vec};
 
 pub async fn get_solution_by_id(id: u64) -> Option<Solution> {
@@ -34,21 +34,19 @@ pub async fn get_solution_chance_by_id(id: u64) -> Option<SolutionChance> {
     get_first_record_from_result_vec(records)
 }
 
-pub async fn get_solution_domain(id: u64) {
-    let solution = get_solution_by_id(id).await;
+pub async fn guess_solution(solution_guess: &SolutionGuess) -> bool {
+    let solution = get_solution_by_id(solution_guess.solution_id).await;
     match solution {
         Some(solution) => {
             let solution_type = solution.solution_type;
 
-            let other_stuff = get_db_client()
-                .from(format!("{}_solutions", solution_type.name).as_str())
-                .eq("solution_id", solution.id.to_string().as_str())
-                .columns(vec![format!("{}(name)", solution_type.name).as_str()])
-                .execute()
-                .await;
+            log::info!("Doing guess for ID of type: {}_solutions and guess str: {}", solution_type.name, solution_guess.guess);
+
+            false
+            // this could be extended here to add more solution domain-specific stuff
         },
         None => {
-            println!("No solution found with id: {}", id);
+            false
         }
     }
 }

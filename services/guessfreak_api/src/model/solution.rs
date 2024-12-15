@@ -3,6 +3,12 @@ use chrono::{DateTime, Utc};
 use crate::model::static_asset::StaticAsset;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct SolutionGuess {
+    pub solution_id: u64,
+    pub guess: String
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct SolutionType {
     pub id: u64,
     pub name: String,

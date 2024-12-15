@@ -1,6 +1,6 @@
 use bytes::Bytes;
 use warp::http::Response;
-use crate::db::supabase::{storage};
+use crate::db::supabase::storage::download_file;
 use crate::model::static_asset::StaticAsset;
 use crate::service::static_asset::get_static_asset;
 
@@ -9,7 +9,7 @@ pub async fn stream_static_asset(id: u64) -> Result<impl warp::Reply, warp::Reje
 
     match static_asset {
         Some(static_asset) => {
-            let file_bytes = storage::download_file(&static_asset.path).await;
+            let file_bytes = download_file(&static_asset.path).await;
 
             match file_bytes {
                 Ok(file_bytes) => {
