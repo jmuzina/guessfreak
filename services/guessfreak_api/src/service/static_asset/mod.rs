@@ -1,21 +1,13 @@
 use crate::db::supabase::get_db_client;
 use crate::model::static_asset::StaticAsset;
+use crate::util::records::get_first_record_from_result_vec;
 
 pub async fn get_static_asset(id: u64) -> Option<StaticAsset> {
-    let result = get_db_client()
+    let records = get_db_client()
         .from("static_asset")
         .eq("id", id.to_string().as_str())
         .execute()
         .await;
 
-    match result {
-        Ok(records) => {
-            if records.is_empty() {
-               None
-            } else {
-                serde_json::from_value(records[0].clone()).ok()
-            }
-        },
-        Err(_) => None
-    }
+    get_first_record_from_result_vec::<StaticAsset, String>(records)
 }
