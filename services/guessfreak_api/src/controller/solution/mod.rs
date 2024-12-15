@@ -4,6 +4,7 @@ use crate::model::solution::Solution;
 
 /**
  * @param id The id of the solution
+ * TODO if i really want to keep this, there should be a solution service instead of doing this in controller
  * @return The solution
 */
 pub async fn get_solution_by_id(id: u64) -> Result<impl warp::Reply, warp::Rejection> {

@@ -6,10 +6,10 @@ use crate::controller::error::error_handler::handle_rejection;
 */
 pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     solution::routes()
-        .or(files::routes())
+        .or(static_asset::routes())
         .recover(handle_rejection)
 }
 
 
 mod solution;
-mod files;
+mod static_asset;

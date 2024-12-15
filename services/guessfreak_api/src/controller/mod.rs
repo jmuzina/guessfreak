@@ -1,3 +1,3 @@
 pub mod solution;
 pub mod error;
-pub mod files;
+pub mod static_asset;
