@@ -16,7 +16,6 @@ pub async fn get_solution_by_id(id: u64) -> Result<Solution, String> {
             .map_err(|e| e.to_string())?
             .as_str()
     )
-        .and_then(|solution| Ok(solution))
         .map_err(|e| e.to_string())
 }
 
@@ -25,7 +24,7 @@ pub async fn get_solution_chance_by_id(id: u64) -> Result<SolutionChance, String
         &get_db_client()
             .from("chance")
             .select("id,created_at,solution(id,created_at,solution_type(id,name,label)),text_html,static_asset(id,created_at,asset_type,path,description)")
-            .eq("id", &id.to_string())
+            .eq("id", id.to_string())
             .single()
             .execute()
             .await
