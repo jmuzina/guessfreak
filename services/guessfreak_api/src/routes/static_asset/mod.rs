@@ -18,5 +18,5 @@ pub fn routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejecti
 fn stream_file() -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::get()
         .and(warp::path::param::<u64>())
-        .and_then(static_asset::stream_static_asset)
+        .and_then(static_asset::cnt_stream_static_asset)
 }

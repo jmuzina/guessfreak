@@ -3,7 +3,7 @@ use crate::db::supabase::storage;
 use crate::model::path::PathRequest;
 use warp::http::Response;
 
-pub async fn stream_file(path: PathRequest) -> Result<impl warp::Reply, warp::Rejection> {
+pub async fn cnt_stream_file(path: PathRequest) -> Result<impl warp::Reply, warp::Rejection> {
     let file_bytes = storage::download_file(path.path.as_ref()).await;
 
     match file_bytes {
