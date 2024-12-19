@@ -1,17 +1,12 @@
 use bytes::Bytes;
 use warp::http::Response;
-use crate::db::supabase::{storage};
-use crate::model::static_asset::StaticAsset;
+use crate::db::supabase::storage::download_file;
 use crate::service::static_asset::get_static_asset;
 
-pub async fn stream_static_asset(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
-    let static_asset: Option<StaticAsset> = get_static_asset(id).await;
-
-    match static_asset {
-        Some(static_asset) => {
-            let file_bytes = storage::download_file(&static_asset.path).await;
-
-            match file_bytes {
+pub async fn cnt_stream_static_asset(id: u64) -> Result<impl warp::Reply, warp::Rejection> {
+    match get_static_asset(id).await {
+        Ok(static_asset) => {
+            match download_file(&static_asset.path).await {
                 Ok(file_bytes) => {
                     let stream = tokio_stream::iter(vec![Ok::<Bytes, std::io::Error>(Bytes::from(file_bytes))]);
 
@@ -24,19 +19,19 @@ pub async fn stream_static_asset(id: u64) -> Result<impl warp::Reply, warp::Reje
                         Ok(response)  => Ok(response),
                         Err(err) => {
                             log::error!("Error occurred constructing response body: {}", err);
-                            Err(warp::reject::not_found())
+                            Err(warp::reject::reject())
                         }
                     }
                 },
                 Err(err) => {
                     log::error!("Error occurred while downloading file: {}", err);
-                    Err(warp::reject::not_found())
+                    Err(warp::reject::reject())
                 }
             }
         },
-        None => {
-            log::error!("Failed to get file: {}", id);
-            Err(warp::reject::not_found())
+        Err(err) => {
+            log::error!("Failed to get file with id {} due to error {}", id, err);
+            Err(warp::reject::reject())
         }
     }
 }
