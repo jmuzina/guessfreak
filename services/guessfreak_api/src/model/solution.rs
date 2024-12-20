@@ -27,7 +27,7 @@ pub struct Solution {
 pub struct SolutionChance {
     pub id: u64,
     pub created_at: DateTime<Utc>,
-    pub solution: Solution,
+    // pub solution: Solution,
     pub text_html: String,
     pub static_asset: Option<StaticAsset>
 }
